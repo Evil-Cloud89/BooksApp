@@ -24,6 +24,12 @@
 
   function render(){                                                                // Funkcja do dodawania książek do strony
     for(const book of dataSource.books){                                            // Pętla do wyszukiwania książek 
+      const ratingBgc = determineRatingBgc(book.rating);                            // Stała, która będzie zwracała rating 
+      const ratingWidth = book.rating * 10;                                         // Stała, która ustali długość paska (* 10 ponieważ konwertujemy to do %)
+      book.ratingBgc = ratingBgc;
+      // console.log('ratingBgc', book.rating);
+      book.ratingWidth = ratingWidth;
+      // console.log('ratingWidth', ratingWidth);
       const generatedHTML = templates.book(book);                                   // Wygenerowanie kodu HTML na podstawie szablonu
       // console.log('generatedHTML:', generatedHTML);
       const generateDOMElement = utils.createDOMFromHTML(generatedHTML);            // Generowanie elementu DOM
@@ -101,6 +107,20 @@
       }
       console.log('selectCover:', selectCover);
     }
+  }
+
+  function determineRatingBgc(rating){                                            // Funkcja do określenia ratingu i ustawienia odpowiedniego koloru dla jego tła
+    let background = '';                                                          
+    if(rating < 6){                                                               // Zależośc, które przyjmujemy - dające odpowiedni kolor
+      background = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+    } else if(rating > 6 && rating <= 8){
+      background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+    } else if(rating > 8 && rating <= 9){
+      background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+    } else if(rating > 9){
+      background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+    }
+    return background;                                                            // Zwracamy odpowiedni background
   }
 
   render();

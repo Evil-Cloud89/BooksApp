@@ -42,10 +42,15 @@
     for(let cover of booksCovers){                                                // Pętla do wyszukania okładek
       cover.addEventListener('dblclick', function(event){                         // Event - podwójne kliknięcie będzie wywoływało akcję
         event.preventDefault();                                                   // Zatrzymuje domyślne zachowanie przeglądarki
-        cover.classList.add('favorite');                                          // Dodanie klasy 'favorite' po podwójnym kliknięciu w okładkę 
         const bookId = cover.getAttribute('data-id');                             // Znalezienie Id książki po podwójnym kliknięciu
         // console.log('bookId:', bookId);
-        favoriteBooks.push(bookId);                                               // Dodanie książki (nr ID) do tablicy favoriteBooks 
+        if(!favoriteBooks.includes(bookId)){                                      // Sprawdza czy w tablicy (favoriteBooks) mamy już daną książkę - sprawdza to po ID książki 
+          favoriteBooks.push(bookId);                                             // ! = zaprzeczenie, czyli jeśli w tablicy nie ma książki to dodaje książki (nr ID) do tablicy
+          cover.classList.add('favorite');                                        // Dodanie klasy 'favorite' po podwójnym kliknięciu w okładkę
+        } else {
+          favoriteBooks.splice(favoriteBooks.indexOf(bookId), 1);                 // Jeżeli książka ma klasę favorite nastąpi przywrócenie tablicy do stanu przed dodaniem klasy a następnie... 
+          cover.classList.remove('favorite');                                     // ... Usunięcie klasy 'favorite' po podwójnym kliknięciu w okładkę
+        }
       });
     }
   }

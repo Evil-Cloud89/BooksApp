@@ -42,14 +42,19 @@
     for(let cover of booksCovers){                                                // Pętla do wyszukania okładek
       cover.addEventListener('dblclick', function(event){                         // Event - podwójne kliknięcie będzie wywoływało akcję
         event.preventDefault();                                                   // Zatrzymuje domyślne zachowanie przeglądarki
-        const bookId = cover.getAttribute('data-id');                             // Znalezienie Id książki po podwójnym kliknięciu
-        // console.log('bookId:', bookId);
-        if(!favoriteBooks.includes(bookId)){                                      // Sprawdza czy w tablicy (favoriteBooks) mamy już daną książkę - sprawdza to po ID książki 
-          favoriteBooks.push(bookId);                                             // ! = zaprzeczenie, czyli jeśli w tablicy nie ma książki to dodaje książki (nr ID) do tablicy
-          cover.classList.add('favorite');                                        // Dodanie klasy 'favorite' po podwójnym kliknięciu w okładkę
-        } else {
-          favoriteBooks.splice(favoriteBooks.indexOf(bookId), 1);                 // Jeżeli książka ma klasę favorite nastąpi przywrócenie tablicy do stanu przed dodaniem klasy a następnie... 
-          cover.classList.remove('favorite');                                     // ... Usunięcie klasy 'favorite' po podwójnym kliknięciu w okładkę
+        const coverLink = event.target;                                           // Event delegation - namierza konkretny element w kontenerze, który wykona akcję po podwójnym kliknięciu
+        // console.log('coverLink:', coverLink);
+        if (coverLink.offsetParent.classList.contains('book__image')){            // Dodanie zależności dla konkretnego elementu w celu:
+          // console.log('event.target:', event.target);
+          const bookId = coverLink.offsetParent.getAttribute('data-id');          // Znalezienie Id książki po podwójnym kliknięciu
+          // console.log('bookId:', bookId);
+          if(!favoriteBooks.includes(bookId)){                                    // Sprawdza czy w tablicy (favoriteBooks) mamy już daną książkę - sprawdza to po ID książki 
+            favoriteBooks.push(bookId);                                           // ! = zaprzeczenie, czyli jeśli w tablicy nie ma książki to dodaje książki (nr ID) do tablicy
+            coverLink.offsetParent.classList.add('favorite');                     // Dodanie klasy 'favorite' po podwójnym kliknięciu w okładkę
+          } else {
+            favoriteBooks.splice(favoriteBooks.indexOf(bookId), 1);               // Jeżeli książka ma klasę favorite nastąpi przywrócenie tablicy do stanu przed dodaniem klasy a następnie... 
+            coverLink.offsetParent.classList.remove('favorite');                  // ... Usunięcie klasy 'favorite' po podwójnym kliknięciu w okładkę
+          }
         }
       });
     }

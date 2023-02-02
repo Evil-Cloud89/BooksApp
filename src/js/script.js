@@ -8,6 +8,12 @@
     containerOf: {
       booksList: '.books-list',
     },
+    oneBook: {
+      title: '.book__name',
+      price: '.product__base-price',
+      cover: '.book__image',
+      rating: '.book__rating__fill',
+    }
   };
   // console.log('select:', select);
 
@@ -26,5 +32,24 @@
       booksContainer.appendChild(generateDOMElement);                               // Dodanie elementu DOM do listy książek (jako nowe dziecko DOM)
     }
   }
+
+  const favoriteBooks = [];
+  // console.log(favoriteBooks);
+
+  function initActions(){
+    const booksCovers = document.querySelectorAll('.book__image');                // Znajduje wszystkie okładki książek
+    // console.log('booksList', booksCovers);
+    for(let cover of booksCovers){                                                // Pętla do wyszukania okładek
+      cover.addEventListener('dblclick', function(event){                         // Event - podwójne kliknięcie będzie wywoływało akcję
+        event.preventDefault();                                                   // Zatrzymuje domyślne zachowanie przeglądarki
+        cover.classList.add('favorite');                                          // Dodanie klasy 'favorite' po podwójnym kliknięciu w okładkę 
+        const bookId = cover.getAttribute('data-id');                             // Znalezienie Id książki po podwójnym kliknięciu
+        // console.log('bookId:', bookId);
+        favoriteBooks.push(bookId);                                               // Dodanie książki (nr ID) do tablicy favoriteBooks 
+      });
+    }
+  }
+
   render();
+  initActions();
 }
